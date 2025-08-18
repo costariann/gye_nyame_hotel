@@ -1,0 +1,127 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/* 7.14 gallery css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-gallery{
+  &-btn{
+    & .tp-gallery-button-prev {
+      margin-right: 16px;
+    }
+    & div{
+      font-size: 36px;
+      color: var(--tp-common-black);
+      opacity: 0.3;
+      transition: all .3s ease;
+      &:hover{
+        opacity: 1;
+      }
+    }
+    &-3{
+      & div{
+        font-size: 20px;
+      }
+    }
+  }
+  &-pagination{
+      font-weight: 400;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: #a3a0a1;
+      & .swiper-pagination-total {
+        color: var(--tp-common-black);
+      }
+    &.swiper-pagination-fraction {
+      width: auto;
+    }
+  }
+  &-content{
+    & p{
+      line-height: 150%;
+      letter-spacing: -0.02em;
+      color: var(--tp-grey-1);
+    }
+  }
+  &-title{
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  &-logo{
+    & svg{
+      @media #{$lg,$md,$sm,$xs} {
+        width: 100%;
+      }
+    }
+  }
+  &-view{
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--tp-theme-primary);
+    padding-left: 65px;
+    position: relative;
+    & span{
+      @include bgborder(#B7124D, 0,0);
+      @include transition(all .3s ease);
+      &:hover{
+        color: var(--tp-theme-primary);
+        @include bgborder(#B7124D, 0,100%);
+        @include transition(all .3s ease);
+      }
+    }
+    &::before{
+      position: absolute;
+      content: "";
+      width: 50px;
+      height: 1px;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      background: var(--tp-theme-primary);
+    }
+  }
+  &-slide{
+    margin-left: -100px;
+    margin-right: -100px;
+    @media #{$lg,$md,$sm,$xs} {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+  &-row{
+    &-spacing{
+      @media #{$xs} {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  &-thumb{
+    position: relative;
+    transition: all .6s ease;
+    overflow: hidden;
+    & img{
+      transition: all .6s ease;
+    }
+    &:hover{
+      & img{
+        transform: scale(1.07);
+      }
+      &::before{
+        opacity: 1;
+      }
+    }
+    &::before{
+      background: linear-gradient(180deg, rgba(20, 20, 20, 0) 0%, rgba(20, 20, 20, 0.8) 100%);
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+  }
+}

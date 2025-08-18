@@ -1,0 +1,97 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/* 7.23 suites css
+/*----------------------------------------*/
+
+.#{$theme-prifix}-suites{
+  $self : &;
+  &-item{
+    overflow: hidden;
+    z-index: 2;
+    &:hover{
+      #{$self}{
+        &-hidden{
+          opacity: 1;
+          visibility: visible;
+        }
+        &-content{
+          bottom: 30px;
+        }
+        &-thumb{
+          & img{
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+  &-thumb{
+    position: relative;
+    & img{
+      @include transition(all .4s ease);
+    }
+    &::before{
+      background: linear-gradient(180deg, rgba(20, 20, 20, 0) 0%, rgba(20, 20, 20, 0.8) 100%);
+      position: absolute;
+      content: "";
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  }
+  &-price{
+    top: 30px;
+    right: 0;
+    & span{
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      padding: 5px 10px;
+      display: inline-block;
+      background: var(--tp-common-white);
+    }
+    &.price-radius{
+      & span{
+        border-radius: 6px 0px 0px 6px;
+      }
+    }
+  }
+  &-content{
+    bottom: -102px;
+    left: 30px;
+    right: 30px;
+    z-index: 3;
+    @include transition(all .4s ease);
+  }
+  &-title{
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: var(--tp-common-white);
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  &-room{
+    & .space{
+      margin: 0 8px;
+    }
+    & span{
+      letter-spacing: -0.02em;
+      color: var(--tp-common-white);
+    }
+  }
+  &-hidden{
+    opacity: 0;
+    visibility: hidden;
+    @include transition(all .4s ease);
+    & p{
+      font-size: 16px;
+      line-height: 1.37;
+      letter-spacing: -0.02em;
+      color: var(--tp-common-white);
+      margin-bottom: 23px;
+    }
+  }
+}

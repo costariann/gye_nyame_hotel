@@ -1,0 +1,16 @@
+
+// font url
+$font-url: 'https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Onest:wght@100..900&family=Outfit:wght@100..900&family=Parisienne&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap';
+
+// font family
+$font-family: (
+    'ff': (
+        'dm':"'DM Sans', sans-serif",
+        'playfair': "'Playfair Display', serif", 
+        'amita': "'Amita', serif", 
+        'outfit': "'Outfit', sans-serif",
+        'onest': "'Onest', sans-serif",
+        'parisienne': "'Parisienne', system-ui",
+        'fontawesome': '"Font Awesome 6 Pro"',
+    )
+);

@@ -1,0 +1,189 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.16 room css
+/*----------------------------------------*/
+.#{$theme-prifix}-offer{
+  &-info{
+    &-wrapper{
+      box-shadow: 0 20px 30px 6px rgba(20, 20, 20, 0.1);
+      background: var(--tp-common-white);
+      padding: 50px 55px 50px 50px;
+      margin-right: 65px;
+      margin-bottom: -90px;
+      margin-top: 60px;
+      @media #{$xl} {
+        margin-right: 26px;
+        margin-top: 26px;
+      }
+      @media #{$md,$sm,$xs} {
+        margin-right: 0;
+      }
+      @media #{$xs} {
+        padding: 50px 20px 50px 20px;
+      }
+    }
+  }
+  &-border{
+    width: 100px;
+    height: 2px;
+    background: var(--tp-theme-primary);
+    display: inline-block;
+  }
+  &-para{
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    color: var(--tp-grey-1);
+  }
+  &-title{
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    &-pre{
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: var(--tp-theme-primary);
+      margin-bottom: 5px;
+      display: inline-block;
+      font-weight: 500;
+    }
+  }
+  &-room{
+    &-space{
+      margin-bottom: 250px;
+    }
+  }
+  &-rating{
+    &-wrap{
+      margin-right: 27px;
+      padding-right: 35px;
+      border-right: 1px solid #dfdfdf;
+    }
+    & span{
+      color: #FF9E0D;
+      font-size: 13px;
+    }
+    &-days{
+      & .space{
+        margin: 0px 3px;
+      }
+      & span{
+        letter-spacing: -0.02em;
+      }
+    }
+  }
+  &-price{
+    & span{
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: -0.02em;
+    }
+    & h6{
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 0;
+    }
+  }
+  &-three{
+    &-pre{
+      font-family: var(--tp-ff-onest);
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 2.3;
+      letter-spacing: 0.06em;
+      display: block;
+      text-transform: uppercase;
+      color: var(--tp-common-white);
+      border-bottom: 1px solid rgba(250, 245, 239, 0.2);
+      padding-bottom: 7px;
+      margin-bottom: 11px;
+    }
+    &-title{
+      font-family: var(--tp-ff-playfair);
+      font-weight: 600;
+      font-size: 28px;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--tp-common-white);
+    }
+    &-btn{
+      font-family: var(--tp-ff-onest);
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--tp-theme-1);
+      display: inline-block;
+      background: var(--tp-common-white2);
+      padding: 9px 24px;
+      &:hover{
+        color: var(--tp-theme-1);
+      }
+    }
+    &-content{
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      padding: 50px 92px;
+      @media #{$lg,$md} {
+        padding: 50px 42px;
+      }
+      @media #{$sm,$xs} {
+        padding: 20px 20px;
+      }
+    }
+    &-thumb{
+      & img{
+        transition: all .4s ease;
+      }
+    }
+    &-wrap{
+      overflow: hidden;
+      &:hover{
+        & .tp-offer-three-thumb{
+          & img{
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+  &-awesome{
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--tp-common-white);
+    background: var(--tp-theme-1);
+    padding: 7px 18px;
+  }
+  &-discount{
+    & .discount{
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+      color: var(--tp-common-black);
+    }
+    & p{
+      font-family: var(--tp-ff-onest);
+      font-size: 17px;
+      letter-spacing: -0.02em;
+      font-weight: 400;
+      color: #39332f;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

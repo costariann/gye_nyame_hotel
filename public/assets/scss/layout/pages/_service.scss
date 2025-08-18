@@ -1,0 +1,124 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/* 7.22 service css
+/*----------------------------------------*/
+.#{$theme-prifix}-service{
+  $self : &;
+  &-pagination{
+    text-align: center;
+    margin-top: 30px;
+    & span{
+      width: 40px;
+      height: 2px;
+      background: #e4e4e4;
+      opacity: 1;
+      border-radius: 0;
+      &.swiper-pagination-bullet-active{
+        background: var(--tp-common-black);
+      }
+    }
+  }
+  &-3{
+    &-content{
+      position: absolute;
+      top: 82%;
+      background: var(--tp-common-white2);
+      left: 30px;
+      right: 30px;
+      bottom: 30px;
+      padding: 17px 43px;
+      overflow: hidden;
+      @include transition(.4s);
+      transition-delay: 0s;
+      @media #{$xl} {
+        top: 80%;
+      }
+      @media #{$lg} {
+        top: 79%;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        padding: 17px 14px;
+      }
+      @media #{$md} {
+        padding: 22px 20px 17px 20px;
+        top: 76%;
+      }
+      @media #{$sm} {
+        padding: 17px 14px;
+        top: 86%;
+      }
+      @media #{$xs} {
+        padding: 22px 20px 17px 20px;
+        top: 76%;
+      }
+    }
+    &-title{
+      font-family: var(--tp-ff-playfair);
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--tp-common-black4);
+      margin-bottom: 0;
+    }
+    &-para{
+      opacity: 0;
+      visibility: hidden;
+      transition: all .4s ease;
+      & p{
+        font-family: var(--tp-ff-onest);
+        font-size: 15px;
+        line-height: 24px;
+        color: #635c57;
+        margin-bottom: 23px;
+      }
+      & .tp-btn-4{
+        padding: 8px 28px;
+      }
+    }
+    &-thumb{
+      & img{
+        transition: all .4s ease;
+      }
+    }
+    &-wrap{
+      overflow: hidden;
+      &:hover{
+        & .tp-service-3-thumb{
+          & img{
+            transform: scale(1.1);
+          }
+        }
+        & .tp-service-3-content{
+          transition-delay: 0s;
+          top: 48%;
+          padding: 22px 43px 17px 43px;
+          @media #{$xl} {
+            top: 44%;
+          }
+          @media #{$lg,$md} {
+            padding: 22px 20px 17px 20px;
+            top: 38%;
+          }
+          @media #{$sm} {
+            top: 61%;
+          }
+          @media #{$xs} {
+            padding: 22px 20px 17px 20px;
+            top: 40%;
+          }
+        }
+        & .tp-service-3-para{
+          margin-bottom: 10px;
+          opacity: 1;
+          visibility: visible;
+        }
+      } 
+    }
+  }
+}
+.border-radius-10{
+  border-radius: 10px;
+}
