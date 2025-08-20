@@ -7660,7 +7660,7 @@ input[type='color'] {
 }
 .tp-service-3-content {
   position: absolute;
-  top: 82%;
+  top: 80%;
   background: var(--tp-common-white2);
   left: 30px;
   right: 30px;
@@ -7742,7 +7742,7 @@ input[type='color'] {
 .tp-service-3-wrap:hover .tp-service-3-content {
   transition-delay: 0s;
   top: 48%;
-  padding: 22px 43px 17px 43px;
+  padding: 17px 43px 50px 43px;
 }
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
   .tp-service-3-wrap:hover .tp-service-3-content {
