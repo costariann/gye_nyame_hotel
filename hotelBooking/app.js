@@ -7,6 +7,7 @@ import { v4 as uuid4 } from 'uuid';
 import { error } from 'console';
 import exp from 'constants';
 import dotenv from 'dotenv';
+import multer from 'multer';
 
 dotenv.config();
 const { Pool } = pg;
@@ -21,10 +22,10 @@ const __dirname = path.dirname(_filename);
 
 //postgres connection pool
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
+  connectionString: process.env.DB_URL,
+  ssl: {
+    rejectUnauthorized: false, // required on Render
+  },
   max: 20, //maximum number of client in the pool
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
