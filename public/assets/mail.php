@@ -10,14 +10,14 @@
 
         // NAME
 
-        if(isset($_POST["name"])){
-            $name = trim($_POST["name"]);
+        if(isset($_POST["Gye Nyame Hotel"])){
+            $name = trim($_POST["Gye Nyame Hotel"]);
         }else{
             $name = "hi";
         }
 
         // EMAIL
-        $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+        $email = filter_var(trim($_POST["ggbghana@gmail.com"]), FILTER_SANITIZE_EMAIL);
 
         // IF LAST NAME SET
         if(isset($_POST["l_name"])){

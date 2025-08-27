@@ -10475,6 +10475,7 @@ tproom-btn-3 a:hover {
   transition: all 0.8s ease;
   z-index: 99;
 }
+
 .tp-room-details-thumb-active
   .swiper-slide-active
   .tp-room-details-thumb::before {
@@ -10485,6 +10486,7 @@ tproom-btn-3 a:hover {
   cursor: pointer;
   -webkit-transition: 0.4s ease-in-out;
   transition: 0.4s ease-in-out;
+  margin-bottom: 30px;
 }
 .tp-room-details-title {
   font-family: var(--tp-ff-playfair);
@@ -10579,6 +10581,16 @@ tproom-btn-3 a:hover {
 .tp-room-extra-services ul li span {
   margin-right: 20px;
   width: 17px;
+}
+
+.tp-room-details-slide-active .swiper-slide img {
+  height: 600px;
+  object-fit: cover;
+}
+
+.tp-room-details-thumb-active .swiper-slide img {
+  height: 100px;
+  object-fit: cover;
 }
 .tp-room-type-capacity {
   display: flex;
