@@ -955,7 +955,7 @@ app.get('/api/reservations', async (req, res) => {
 });
 
 // Process payment
-app.post('/api/payments', authenticateToken, async (req, res) => {
+app.post('/api/payments', async (req, res) => {
   const { email, amount, reservation_id, method } = req.body;
   if (!email || !amount || !reservation_id || !method) {
     return res.status(400).json({
@@ -993,7 +993,7 @@ app.post('/api/payments', authenticateToken, async (req, res) => {
 });
 
 // Verify payment
-app.get('/api/verify/:reference', authenticateToken, async (req, res) => {
+app.get('/api/verify/:reference', async (req, res) => {
   const { reference } = req.params;
   try {
     // Verify payment record exists

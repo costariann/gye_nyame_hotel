@@ -13,7 +13,7 @@ export const initializePayment = async ({ email, amount }) => {
       {
         headers: {
           Authorization: `Bearer sk_test_d5308de3a5401eab5834446ffff1c0486e86dbe2`,
-          'Contect-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
       }
     );
