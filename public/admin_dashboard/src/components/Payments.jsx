@@ -4,6 +4,8 @@ import axios from 'axios';
 const Payments = () => {
   const [payments, setPayments] = useState([]);
   const [error, setError] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Fixed at 10 items per page
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -16,6 +18,7 @@ const Payments = () => {
             },
           }
         );
+        console.log('Payments data:', response.data.payments);
         setPayments(response.data.payments);
       } catch (err) {
         console.error('Error fetching payments:', err);
@@ -24,6 +27,20 @@ const Payments = () => {
     };
     fetchPayments();
   }, []);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(payments.length / itemsPerPage);
+
+  // Get current items
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = payments.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
   return (
     <div className="p-6">
@@ -43,7 +60,7 @@ const Payments = () => {
             </tr>
           </thead>
           <tbody>
-            {payments.map((payment) => (
+            {currentItems.map((payment) => (
               <tr key={payment.payment_id} className="border-t">
                 <td className="p-2">{payment.guest_name}</td>
                 <td className="p-2">
@@ -61,6 +78,45 @@ const Payments = () => {
           </tbody>
         </table>
       </div>
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center mt-4">
+          <span className="text-gray-600">
+            Showing {currentPage} of {totalPages} pages
+          </span>
+          <div className="flex space-x-2">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (number) => (
+                <button
+                  key={number}
+                  onClick={() => paginate(number)}
+                  className={`px-4 py-2 rounded ${
+                    currentPage === number
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-300 text-gray-800 hover:bg-gray-400'
+                  }`}
+                >
+                  {number}
+                </button>
+              )
+            )}
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

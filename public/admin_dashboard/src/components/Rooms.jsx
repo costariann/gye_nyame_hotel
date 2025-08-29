@@ -14,6 +14,8 @@ const Rooms = () => {
     status: 'available',
   });
   const [images, setImages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Fixed at 10 items per page
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -113,6 +115,20 @@ const Rooms = () => {
     return amenities;
   };
 
+  // Calculate total pages
+  const totalPages = Math.ceil(rooms.length / itemsPerPage);
+
+  // Get current items
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRooms = rooms.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+
   return (
     <div className="p-6">
       <h1 className="text-2xl md:text-3xl font-bold mb-6">Rooms</h1>
@@ -133,8 +149,8 @@ const Rooms = () => {
             </tr>
           </thead>
           <tbody className="text-sm md:text-base">
-            {rooms.length > 0 ? (
-              rooms.map((room) => (
+            {currentRooms.length > 0 ? (
+              currentRooms.map((room) => (
                 <tr key={room.room_id} className="border-t">
                   <td className="p-2 break-words">{room.room_number}</td>
                   <td className="p-2 break-words">{room.room_type}</td>
@@ -284,6 +300,46 @@ const Rooms = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center mt-4">
+          <span className="text-gray-600">
+            Showing {currentPage} of {totalPages} pages
+          </span>
+          <div className="flex space-x-2">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (number) => (
+                <button
+                  key={number}
+                  onClick={() => paginate(number)}
+                  className={`px-4 py-2 rounded ${
+                    currentPage === number
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-300 text-gray-800 hover:bg-gray-400'
+                  }`}
+                >
+                  {number}
+                </button>
+              )
+            )}
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Next
+            </button>
           </div>
         </div>
       )}

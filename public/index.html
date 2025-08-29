@@ -307,33 +307,10 @@
                         <a href="room.html"
                           >Rooms <i class="fa-regular fa-angle-down"></i
                         ></a>
-                        <ul class="tp-submenu submenu">
-                          <li><a href="room.html">Standard Room</a></li>
-                          <li>
-                            <a href="room-2.html">Executive Suite Room</a>
-                          </li>
-                          <li>
-                            <a href="room-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                          <li>
-                            <a href="deluxe_2.html">Standard Room Details </a>
-                          </li>
-                          <li>
-                            <a href="room-details-2.html"
-                              >Executive Suite Details</a
-                            >
-                          </li>
-                          <li>
-                            <a href="room-details-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                        </ul>
+                        <ul class="tp-submenu submenu"></ul>
                       </li>
                       <li>
-                        <a href="index-3.html"
+                        <a href="index.html"
                           >Pages <i class="fa-regular fa-angle-down"></i
                         ></a>
                         <div class="tp-mega-menu">
@@ -464,7 +441,7 @@
                         stroke-linejoin="round"
                       />
                     </svg>
-                    Book Now</a
+                    Contact Us</a
                   >
                 </div>
               </div>
@@ -2301,6 +2278,55 @@
               '<p style="color:red;">An error occurred while searching for available rooms. Please try again later.</p>';
           }
         });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async function () {
+        try {
+          const res = await fetch('http://localhost:3000/api/rooms');
+          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+          const { rooms } = await res.json();
+          if (!Array.isArray(rooms)) return;
+
+          const selectedRooms = rooms
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
+
+          // target the Rooms li (first li in this nav) then its submenu
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (!submenu) return;
+
+          submenu.innerHTML =
+            selectedRooms
+              .map(
+                (r) => `
+      <li>
+        <a class="nav-room-link" href="/room-detail.html?id=${r.room_id}">
+          ${r.room_type.replace(/_/g, ' ')} 
+        </a>
+      </li>
+    `
+              )
+              .join('') ||
+            '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
+
+          // optional: add a "View all rooms"
+          const all = document.createElement('li');
+          all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
+          submenu.appendChild(all);
+        } catch (e) {
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (submenu)
+            submenu.innerHTML =
+              '<li><a class="nav-room-link" href="#">Error loading rooms</a></li>';
+          console.error(e);
+        }
       });
     </script>
   </body>

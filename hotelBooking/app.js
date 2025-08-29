@@ -73,7 +73,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 20000,
   ssl:
     process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : false,
 });
@@ -736,18 +736,28 @@ app.delete('/api/rooms/:id', authenticateToken, async (req, res) => {
 
 app.get('/api/rooms/:id/images/:index', async (req, res) => {
   const { id, index } = req.params;
+  console.log(`Fetching image for room ${id}, index ${index}`);
   try {
     const result = await pool.query(
-      'SELECT images[$2] AS image FROM rooms WHERE room_id = $1',
-      [id, parseInt(index, 10) + 1] // PostgreSQL arrays are 1-based
+      'SELECT images[$2] AS image FROM rooms WHERE room_id = $1 LIMIT 1',
+      [id, parseInt(index, 10) + 1]
     );
     if (result.rows.length === 0 || !result.rows[0].image) {
+      console.log(`No image found for room ${id}, index ${index}`);
       return res.status(404).json({ error: 'Image not found' });
     }
+    const imageSize = Buffer.from(result.rows[0].image).length;
+    console.log(
+      `Image fetched for room ${id}, index ${index}, size: ${imageSize} bytes`
+    );
     res.set('Content-Type', 'image/jpeg');
     res.send(result.rows[0].image);
   } catch (err) {
-    console.error('Error fetching image:', err.message, err.stack);
+    console.error(
+      `Error fetching image for room ${id}, index ${index}:`,
+      err.message,
+      err.stack
+    );
     res
       .status(500)
       .json({ error: 'Failed to fetch image', details: err.message });
@@ -1068,7 +1078,7 @@ app.get('/api/admin/payments', authenticateToken, async (req, res) => {
     const result = await pool.query(`
       SELECT 
         p.payment_id, p.reservation_id, p.amount, p.payment_method, p.payment_status, 
-        p.transaction_id, r.guest_name, r.room_id, rm.room_number, rm.room_type
+        p.transaction_id, p.created_at, r.guest_name, r.room_id, rm.room_number, rm.room_type
       FROM payments p
       JOIN reservations r ON p.reservation_id = r.reservation_id
       JOIN rooms rm ON r.room_id = rm.room_id

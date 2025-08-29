@@ -380,6 +380,8 @@ textarea::placeholder {
   color: #95999d;
 }
 
+/* Ensure submenu is visible on hover */
+
 textarea {
   line-height: 1.4;
   padding-top: 18px;
