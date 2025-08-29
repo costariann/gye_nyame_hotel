@@ -270,33 +270,10 @@
                         <a href="room.html"
                           >Rooms <i class="fa-regular fa-angle-down"></i
                         ></a>
-                        <ul class="tp-submenu submenu">
-                          <li><a href="room.html">Standard Room</a></li>
-                          <li>
-                            <a href="room-2.html">Executive Suite Room</a>
-                          </li>
-                          <li>
-                            <a href="room-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                          <li>
-                            <a href="deluxe_2.html">Standard Room Details </a>
-                          </li>
-                          <li>
-                            <a href="room-details-2.html"
-                              >Executive Suite Details</a
-                            >
-                          </li>
-                          <li>
-                            <a href="room-details-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                        </ul>
+                        <ul class="tp-submenu submenu"></ul>
                       </li>
                       <li>
-                        <a href="index-3.html"
+                        <a href="index.html"
                           >Pages <i class="fa-regular fa-angle-down"></i
                         ></a>
                         <div class="tp-mega-menu">
@@ -427,7 +404,7 @@
                         stroke-linejoin="round"
                       />
                     </svg>
-                    Book Now</a
+                    Contact Us</a
                   >
                 </div>
               </div>
@@ -661,7 +638,7 @@
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 mb-60">
               <div class="tp-footer-widget tp-footer-widget-3">
                 <div class="tp-footer-logo mb-25">
-                  <a href="index-3.html"
+                  <a href="index.html"
                     ><img
                       data-width="155"
                       src="assets/img/logo/gyenyame.PNG"
@@ -729,9 +706,8 @@
                     >
                       <ul>
                         <li><a href="#">Rooms & Suites</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Book Now</a></li>
-                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="#search">Book Now</a></li>
                         <li><a href="#">Contact</a></li>
                       </ul>
                     </div>
@@ -739,15 +715,7 @@
                   <div class="col-lg-6 col-md-6">
                     <div
                       class="tp-footer-widget-content tp-footer-widget-content-3"
-                    >
-                      <ul>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Popular Destination</a></li>
-                        <li><a href="#">APricing Plan</a></li>
-                        <li><a href="#">Gallery</a></li>
-                        <li><a href="#">Restaurant</a></li>
-                      </ul>
-                    </div>
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -806,7 +774,7 @@
                       <a
                         href="https://www.geeksglobalworld.com/"
                         target="_blank"
-                        >Geeks Global Technology Ltd</a
+                        >Geeks Global Technologies Ltd</a
                       >
                     </p>
                   </div>
@@ -842,28 +810,56 @@
       document.addEventListener('DOMContentLoaded', async function () {
         const params = new URLSearchParams(window.location.search);
         const roomId = params.get('room_id');
-        const form = document.getElementById('reservation-form');
         const responseElem = document.querySelector('.ajax-response');
+        const form = document.getElementById('reservation-form');
         let roomType = '';
 
-        // Fetch room details to get room_type
+        // Fetch room details if roomId is provided
         if (roomId) {
           try {
-            const res = await fetch(`/api/rooms/${roomId}/`);
+            const res = await fetch(
+              `http://localhost:3000/api/rooms/${roomId}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }
+            );
             const data = await res.json();
             if (data.success && data.roomDetails) {
-              roomType = data.roomDetails.roomType;
-              // Optionally display room info on the page
-              // document.getElementById('room-type-display').textContent = roomType;
+              roomType = data.roomDetails.room_type; // Corrected to room_type
+              // Display selected room info for user confirmation
+              const roomInfo = document.createElement('p');
+              roomInfo.textContent = `Selected Room: ${data.roomDetails.room_type} (Room ${data.roomDetails.room_number})`;
+              roomInfo.style.fontWeight = 'bold';
+              roomInfo.style.marginBottom = '20px';
+              form.parentElement.insertBefore(roomInfo, form);
+            } else {
+              responseElem.textContent =
+                'Room not found. Please select a valid room.';
+              responseElem.style.color = 'red';
             }
           } catch (err) {
-            responseElem.textContent = 'Failed to fetch room details.';
+            responseElem.textContent =
+              'Failed to fetch room details. Please check your connection or try again.';
             responseElem.style.color = 'red';
+            console.error('Error fetching room details:', err);
           }
+        } else {
+          responseElem.textContent =
+            'No room selected. Please choose a room first.';
+          responseElem.style.color = 'red';
         }
 
         form.addEventListener('submit', async function (e) {
           e.preventDefault();
+
+          if (!roomId || !roomType) {
+            responseElem.textContent =
+              'Please select a room before making a reservation.';
+            responseElem.style.color = 'red';
+            return;
+          }
 
           const guestName = document.getElementById('guestName').value;
           const guestEmail = document.getElementById('guestEmail').value;
@@ -872,14 +868,29 @@
           const checkOutDate = document.getElementById('checkOutDate').value;
           const guestCount = document.getElementById('guestCount').value;
 
-          if (!roomId || !roomType) {
-            responseElem.textContent = 'Room information missing.';
+          // Client-side validation
+          if (
+            !guestName ||
+            !guestEmail ||
+            !guestPhone ||
+            !checkInDate ||
+            !checkOutDate ||
+            !guestCount
+          ) {
+            responseElem.textContent = 'Please fill out all required fields.';
+            responseElem.style.color = 'red';
+            return;
+          }
+
+          if (new Date(checkInDate) >= new Date(checkOutDate)) {
+            responseElem.textContent =
+              'Check-out date must be after check-in date.';
             responseElem.style.color = 'red';
             return;
           }
 
           try {
-            const res = await fetch('/api/reservations', {
+            const res = await fetch('http://localhost:3000/api/reservations', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -887,34 +898,90 @@
               body: JSON.stringify({
                 room_id: roomId,
                 room_type: roomType,
-                guestName,
-                guestEmail,
-                guestPhone,
-                checkInDate,
-                checkOutDate,
-                guestCount,
+                guest_name: guestName,
+                guest_email: guestEmail,
+                guest_phone: guestPhone,
+                check_in_date: checkInDate,
+                check_out_date: checkOutDate,
+                guest_count: parseInt(guestCount),
               }),
             });
 
             const data = await res.json();
             if (data.success) {
-              responseElem.textContent = 'Reservation successful!';
+              responseElem.textContent =
+                'Reservation successful! Redirecting to checkout...';
               responseElem.style.color = 'green';
               form.reset();
               console.log('Reservation Data:', data.reservation);
-              // Redirect to checkout page with reservation ID
               setTimeout(() => {
-                window.location.href = `/checkout.html?reservation_id=${data.reservation.reservationId}`;
-              }, 1000); // Delay redirect for user to see success message
+                window.location.href = `/checkout.html?reservation_id=${data.reservation.reservation_id}`;
+              }, 1000);
             } else {
-              responseElem.textContent = data.message || 'Reservation failed.';
+              responseElem.textContent =
+                data.error || 'Reservation failed. Please try again.';
               responseElem.style.color = 'red';
             }
           } catch (error) {
-            responseElem.textContent = 'An error occurred. Please try again.';
+            responseElem.textContent =
+              'An error occurred while processing your reservation. Please try again.';
             responseElem.style.color = 'red';
+            console.error('Error creating reservation:', error);
           }
         });
+
+        // Initialize Flatpickr for date inputs
+        flatpickr('#checkInDate', { dateFormat: 'Y-m-d' });
+        flatpickr('#checkOutDate', { dateFormat: 'Y-m-d' });
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async function () {
+        try {
+          const res = await fetch('http://localhost:3000/api/rooms');
+          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+          const { rooms } = await res.json();
+          if (!Array.isArray(rooms)) return;
+
+          const selectedRooms = rooms
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
+
+          // target the Rooms li (first li in this nav) then its submenu
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (!submenu) return;
+
+          submenu.innerHTML =
+            selectedRooms
+              .map(
+                (r) => `
+      <li>
+        <a class="nav-room-link" href="/room-detail.html?id=${r.room_id}">
+          ${r.room_type.replace(/_/g, ' ')} 
+        </a>
+      </li>
+    `
+              )
+              .join('') ||
+            '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
+
+          // optional: add a "View all rooms"
+          const all = document.createElement('li');
+          all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
+          submenu.appendChild(all);
+        } catch (e) {
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (submenu)
+            submenu.innerHTML =
+              '<li><a class="nav-room-link" href="#">Error loading rooms</a></li>';
+          console.error(e);
+        }
       });
     </script>
   </body>

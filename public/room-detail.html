@@ -294,33 +294,10 @@
                         <a href="room.html"
                           >Rooms <i class="fa-regular fa-angle-down"></i
                         ></a>
-                        <ul class="tp-submenu submenu">
-                          <li><a href="room.html">Standard Room</a></li>
-                          <li>
-                            <a href="room-2.html">Executive Suite Room</a>
-                          </li>
-                          <li>
-                            <a href="room-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                          <li>
-                            <a href="deluxe_2.html">Standard Room Details </a>
-                          </li>
-                          <li>
-                            <a href="room-details-2.html"
-                              >Executive Suite Details</a
-                            >
-                          </li>
-                          <li>
-                            <a href="room-details-3.html"
-                              >Deluxe Suite & Presidential Suite</a
-                            >
-                          </li>
-                        </ul>
+                        <ul class="tp-submenu submenu"></ul>
                       </li>
                       <li>
-                        <a href="index-3.html"
+                        <a href="index.html"
                           >Pages <i class="fa-regular fa-angle-down"></i
                         ></a>
                         <div class="tp-mega-menu">
@@ -451,7 +428,7 @@
                         stroke-linejoin="round"
                       />
                     </svg>
-                    Book Now</a
+                    Contact Us</a
                   >
                 </div>
               </div>
@@ -1178,9 +1155,7 @@
                   class="tp-room-regular-price-wrap mb-30 tp-room-regular-price-border d-flex justify-content-between"
                 >
                   <span class="tp-room-regular-price-title">Per Night:</span>
-                  <span class="tp-room-regular-price"
-                    >GH¢1,350.00(Single) GH¢1,600.00(Double)</span
-                  >
+                  <span class="tp-room-regular-price">Loading...</span>
                 </div>
                 <div class="tp-room-extra-services mb-40">
                   <h3 class="tp-room-details-info-title mb-30">
@@ -1495,11 +1470,7 @@
                     </ul>
                   </div>
                   <div class="tp-room-btn-3" id="checkout-container">
-                    <a
-                      class="tp-btn-square"
-                      href="http://127.0.0.1:5500/houseyhtml-10/housey/checkout.html"
-                      >Book Now</a
-                    >
+                    <a class="tp-btn-square" href="room.html">Book Now</a>
                   </div>
                 </div>
               </div>
@@ -1610,7 +1581,7 @@
                     </ul>
                   </div>
                   <div>
-                    <a>Book Now</a>
+                    <a class="tp-btn-square" href="room.html">Book Now</a>
                   </div>
                 </div>
               </div>
@@ -1697,9 +1668,8 @@
                     >
                       <ul>
                         <li><a href="#">Rooms & Suites</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Book Now</a></li>
-                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="#search">Book Now</a></li>
                         <li><a href="#">Contact</a></li>
                       </ul>
                     </div>
@@ -1707,15 +1677,7 @@
                   <div class="col-lg-6 col-md-6">
                     <div
                       class="tp-footer-widget-content tp-footer-widget-content-3"
-                    >
-                      <ul>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Popular Destination</a></li>
-                        <li><a href="#">APricing Plan</a></li>
-                        <li><a href="#">Gallery</a></li>
-                        <li><a href="#">Restaurant</a></li>
-                      </ul>
-                    </div>
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -1774,7 +1736,7 @@
                       <a
                         href="https://www.geeksglobalworld.com/"
                         target="_blank"
-                        >Geeks Global Technology Ltd</a
+                        >Geeks Global Technologies Ltd</a
                       >
                     </p>
                   </div>
@@ -1817,127 +1779,71 @@
           const data = await res.json();
           console.log('Room API response:', data);
 
-          // Try different keys based on your API
+          // use backend response
           const room = data.roomDetails || data.room || data;
+          console.log('Using room data:', room);
 
-          // Test selectors
-          document.querySelector('.tp-breadcrumb-title').textContent =
-            room.roomType || room.name || 'Room Name';
-          document.querySelector('.tp-room-regular-price').textContent = `GH¢${
-            room.pricePerNight || room.price || '999'
-          }`;
+          // Set title and price correctly
+          const priceElement = document.querySelector('.tp-room-regular-price');
+          if (priceElement) {
+            priceElement.textContent = `GH¢${room.price_per_night}`;
+          }
 
-          // Images
-          let images = Array.isArray(room.image)
-            ? room.image
-            : room.image
-            ? [room.image]
-            : [];
+          // Handle images
+          let images = Array.isArray(room.image_urls) ? room.image_urls : [];
           if (images.length === 0) images = ['assets/img/media/img12.jpg'];
 
           const swiperWrapper = document.querySelector(
             '.tp-room-details-slide-active .swiper-wrapper'
           );
-          if (swiperWrapper) {
-            swiperWrapper.innerHTML = images
-              .map(
-                (img) =>
-                  `<div class="swiper-slide">
-          <div class="tp-room-details-thumb">
-            <img class="w-100" src="${img}" alt="Room Image" />
-          </div>
-        </div>`
-              )
-              .join('');
-          }
           const thumbWrapper = document.querySelector(
             '.tp-room-details-thumb-active .swiper-wrapper'
           );
-          if (thumbWrapper) {
-            thumbWrapper.innerHTML = images
+
+          if (swiperWrapper) {
+            swiperWrapper.innerHTML = images
               .map(
-                (img) =>
-                  `<div class="swiper-slide">
-          <div class="tp-room-details-thumb">
-            <img class="w-100" src="${img}" alt="Room Image" />
-          </div>
-        </div>`
+                (img) => `
+          <div class="swiper-slide">
+            <div class="tp-room-details-thumb">
+              <img class="w-100" src="${img}" alt="Room Image" />
+            </div>
+          </div>`
               )
               .join('');
           }
+
+          if (thumbWrapper) {
+            thumbWrapper.innerHTML = images
+              .map(
+                (img) => `
+          <div class="swiper-slide">
+            <div class="tp-room-details-thumb">
+              <img class="w-100" src="${img}" alt="Room Thumbnail" />
+            </div>
+          </div>`
+              )
+              .join('');
+          }
+
+          // ✅ Re-init Swiper after injecting slides
+          new Swiper('.tp-room-details-slide-active', {
+            loop: true,
+            spaceBetween: 0,
+            thumbs: {
+              swiper: new Swiper('.tp-room-details-thumb-active', {
+                loop: true,
+                spaceBetween: 0,
+                slidesPerView: 4,
+              }),
+            },
+          });
         } catch (error) {
           console.error('Failed to load room details:', error);
         }
       });
     </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async function () {
-        const params = new URLSearchParams(window.location.search);
-        const roomId = params.get('id');
-        console.log('Script running, roomId:', roomId);
-        if (!roomId) return;
 
-        try {
-          console.log('Fetching:', `/api/rooms/${roomId}/`);
-          const res = await fetch(`/api/rooms/${roomId}/`);
-          console.log('Fetch status:', res.status);
-          const data = await res.json();
-          console.log('Room API response:', data);
-
-          // ...rest of your code...
-          // Try different keys based on your API
-          const room = data.roomDetails || data.room || data;
-
-          // Test selectors
-          document.querySelector('.tp-breadcrumb-title').textContent =
-            room.roomType || room.name || 'Room Name';
-          document.querySelector('.tp-room-regular-price').textContent = `GH¢${
-            room.pricePerNight || room.price || '999'
-          }`;
-
-          // Images
-          let images = Array.isArray(room.image)
-            ? room.image
-            : room.image
-            ? [room.image]
-            : [];
-          if (images.length === 0) images = ['assets/img/media/img12.jpg'];
-
-          const swiperWrapper = document.querySelector(
-            '.tp-room-details-slide-active .swiper-wrapper'
-          );
-          if (swiperWrapper) {
-            swiperWrapper.innerHTML = images
-              .map(
-                (img) =>
-                  `<div class="swiper-slide">
-          <div class="tp-room-details-thumb">
-            <img class="w-100" src="${img}" alt="Room Image" />
-          </div>
-        </div>`
-              )
-              .join('');
-          }
-          const thumbWrapper = document.querySelector(
-            '.tp-room-details-thumb-active .swiper-wrapper'
-          );
-          if (thumbWrapper) {
-            thumbWrapper.innerHTML = images
-              .map(
-                (img) =>
-                  `<div class="swiper-slide">
-          <div class="tp-room-details-thumb">
-            <img class="w-100" src="${img}" alt="Room Image" />
-          </div>
-        </div>`
-              )
-              .join('');
-          }
-        } catch (error) {
-          console.error('Failed to load room details:', error);
-        }
-      });
-    </script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(window.location.search);
@@ -1948,6 +1854,55 @@
             e.preventDefault();
             window.location.href = `reservation.html?room_id=${roomId}`;
           });
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async function () {
+        try {
+          const res = await fetch('http://localhost:3000/api/rooms');
+          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+          const { rooms } = await res.json();
+          if (!Array.isArray(rooms)) return;
+
+          const selectedRooms = rooms
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
+
+          // target the Rooms li (first li in this nav) then its submenu
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (!submenu) return;
+
+          submenu.innerHTML =
+            selectedRooms
+              .map(
+                (r) => `
+      <li>
+        <a class="nav-room-link" href="/room-detail.html?id=${r.room_id}">
+          ${r.room_type.replace(/_/g, ' ')} 
+        </a>
+      </li>
+    `
+              )
+              .join('') ||
+            '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
+
+          // optional: add a "View all rooms"
+          const all = document.createElement('li');
+          all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
+          submenu.appendChild(all);
+        } catch (e) {
+          const roomsLi = document.querySelector(
+            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
+          );
+          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
+          if (submenu)
+            submenu.innerHTML =
+              '<li><a class="nav-room-link" href="#">Error loading rooms</a></li>';
+          console.error(e);
         }
       });
     </script>
