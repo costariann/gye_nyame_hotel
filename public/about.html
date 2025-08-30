@@ -70,7 +70,7 @@
           class="tp-offcanvas-top d-flex align-items-center justify-content-between"
         >
           <div class="tp-offcanvas-logo">
-            <a href="index-3.html">
+            <a href="index.html">
               <img data-width="155" src="assets/img/logo/logo-2.png" alt="" />
             </a>
           </div>
@@ -294,33 +294,16 @@
                   <nav class="tp-mobile-menu-active">
                     <ul>
                       <li>
+                        <a href="index.html">Home</a>
+                      </li>
+                      <li class="rooms-nav">
                         <a href="room.html"
                           >Rooms <i class="fa-regular fa-angle-down"></i
                         ></a>
                         <ul class="tp-submenu submenu"></ul>
                       </li>
                       <li>
-                        <a href="index.html"
-                          >Pages <i class="fa-regular fa-angle-down"></i
-                        ></a>
-                        <div class="tp-mega-menu">
-                          <div class="tp-megamenu-small">
-                            <div class="row gx-6 row-cols-1 row-cols-lg-3">
-                              <div class="col">
-                                <div class="tp-megamenu-list">
-                                  <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                  </ul>
-                                </div>
-                              </div>
-                              <div class="col">
-                                <div class="tp-megamenu-list">
-                                  <ul></ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <a href="about.html">About Us </a>
                       </li>
                     </ul>
                   </nav>
@@ -329,7 +312,7 @@
             </div>
             <div class="col-xxl-4 col-xl-3 col-lg-2 col-10">
               <div class="tp-header-logo tp-header-logo-3 text-center">
-                <a class="p-relative" href="index-3.html">
+                <a class="p-relative" href="index.html">
                   <img
                     data-width="155"
                     class="logo-normal"
@@ -431,8 +414,8 @@
                         stroke-linejoin="round"
                       />
                     </svg>
-                    Contact Us</a
-                  >
+                    Contact Us
+                  </a>
                 </div>
               </div>
             </div>
@@ -517,7 +500,7 @@
               <div class="tp-about-4-thumb p-relative mb-40">
                 <img
                   class="w-100"
-                  src="assets/img/about/about-4/thumb.jpg"
+                  src="assets/img//media//img12.jpg"
                   alt="thumb"
                 />
                 <div class="tp-about-4-expreance">
@@ -566,9 +549,7 @@
                   fresh towels,
                 </p>
                 <div class="tp-about-4-client-wrap">
-                  <div class="tp-about-4-client-img mb-10">
-                    <img src="assets/img/about/about-4/user.png" alt="user" />
-                  </div>
+                  <div class="tp-about-4-client-img mb-10"></div>
                   <div class="tp-about-4-client-review mb-10">
                     <p>
                       <span>3256+</span><br />
@@ -789,7 +770,7 @@
       <!-- tp-video-area-start -->
       <div
         class="tp-video-area bg-position jarallax p-relative"
-        data-background="assets/img/video/01.jpg"
+        data-background="assets/img/media/img10.jpg"
       >
         <div class="container">
           <div class="row">
@@ -882,7 +863,7 @@
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6 mb-60">
               <div class="tp-footer-widget tp-footer-widget-3">
                 <div class="tp-footer-logo mb-25">
-                  <a href="index-3.html"
+                  <a href="index.html"
                     ><img
                       data-width="155"
                       src="assets/img/logo/gyenyame.PNG"
@@ -1062,10 +1043,8 @@
             .sort(() => 0.5 - Math.random())
             .slice(0, 6);
 
-          // target the Rooms li (first li in this nav) then its submenu
-          const roomsLi = document.querySelector(
-            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
-          );
+          // Target the Rooms nav link specifically using the rooms-nav class
+          const roomsLi = document.querySelector('#header-sticky .rooms-nav');
           const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
           if (!submenu) return;
 
@@ -1073,24 +1052,24 @@
             selectedRooms
               .map(
                 (r) => `
-      <li>
-        <a class="nav-room-link" href="/room-detail.html?id=${r.room_id}">
-          ${r.room_type.replace(/_/g, ' ')} 
-        </a>
-      </li>
-    `
+                <li>
+                  <a class="nav-room-link" href="/room-detail.html?id=${
+                    r.room_id
+                  }">
+                    ${r.room_type.replace(/_/g, ' ')} 
+                  </a>
+                </li>
+              `
               )
               .join('') ||
             '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
 
-          // optional: add a "View all rooms"
+          // Add "View all rooms" link
           const all = document.createElement('li');
           all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
           submenu.appendChild(all);
         } catch (e) {
-          const roomsLi = document.querySelector(
-            '#header-sticky .tp-main-menu-3 nav > ul > li:first-child'
-          );
+          const roomsLi = document.querySelector('#header-sticky .rooms-nav');
           const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
           if (submenu)
             submenu.innerHTML =
