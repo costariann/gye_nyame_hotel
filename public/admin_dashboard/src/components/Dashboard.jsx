@@ -13,7 +13,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/admin/stats',
+          'http://203.161.52.58:3000/api/admin/stats',
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,

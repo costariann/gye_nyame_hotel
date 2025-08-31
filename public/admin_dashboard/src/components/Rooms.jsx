@@ -20,9 +20,14 @@ const Rooms = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/rooms', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
+        const response = await axios.get(
+          'http://203.161.52.58:3000/api/rooms',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
         setRooms(response.data.rooms);
       } catch (err) {
         console.error('Error fetching rooms:', err);
@@ -54,7 +59,7 @@ const Rooms = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/rooms/${editingRoom.room_id}`,
+        `http://203.161.52.58:3000/api/rooms/${editingRoom.room_id}`,
         data,
         {
           headers: {
@@ -88,7 +93,7 @@ const Rooms = () => {
   const handleDelete = async (roomId) => {
     if (!window.confirm('Are you sure you want to delete this room?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/rooms/${roomId}`, {
+      await axios.delete(`http://203.161.52.58:3000/api/rooms/${roomId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setRooms(rooms.filter((room) => room.room_id !== roomId));

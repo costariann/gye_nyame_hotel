@@ -22,7 +22,7 @@ const SignUp = () => {
     setSuccess('');
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/auth/signup',
+        'http://203.161.52.58:3000/api/auth/signup',
         formData
       );
       setSuccess(response.data.message);

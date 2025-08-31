@@ -801,7 +801,7 @@
         if (roomId) {
           try {
             const res = await fetch(
-              `http://localhost:3000/api/rooms/${roomId}`,
+              `http://203.161.52.58:3000/api/rooms/${roomId}`,
               {
                 headers: {
                   'Content-Type': 'application/json',
@@ -873,22 +873,25 @@
           }
 
           try {
-            const res = await fetch('http://localhost:3000/api/reservations', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                room_id: roomId,
-                room_type: roomType,
-                guest_name: guestName,
-                guest_email: guestEmail,
-                guest_phone: guestPhone,
-                check_in_date: checkInDate,
-                check_out_date: checkOutDate,
-                guest_count: parseInt(guestCount),
-              }),
-            });
+            const res = await fetch(
+              'http://203.161.52.58:3000/api/reservations',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  room_id: roomId,
+                  room_type: roomType,
+                  guest_name: guestName,
+                  guest_email: guestEmail,
+                  guest_phone: guestPhone,
+                  check_in_date: checkInDate,
+                  check_out_date: checkOutDate,
+                  guest_count: parseInt(guestCount),
+                }),
+              }
+            );
 
             const data = await res.json();
             if (data.success) {
@@ -921,7 +924,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', async function () {
         try {
-          const res = await fetch('http://localhost:3000/api/rooms');
+          const res = await fetch('http://203.161.52.58:3000/api/rooms');
           if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
           const { rooms } = await res.json();
           if (!Array.isArray(rooms)) return;

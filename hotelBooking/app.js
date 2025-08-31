@@ -28,7 +28,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'theNewKeyGenerator';
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'], // Allow both origins
+    origin: ['https://ggbghana.com/', 'https://staff.ggbghana.com/'], // Allow both origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -789,7 +789,8 @@ app.get('/api/rooms/:id', async (req, res) => {
     const room = roomResult.rows[0];
     const image_urls = Array.from(
       { length: room.image_count || 0 },
-      (_, i) => `http://localhost:3000/api/rooms/${room.room_id}/images/${i}`
+      (_, i) =>
+        `http://203.161.52.58:3000/api/rooms/${room.room_id}/images/${i}`
     );
     res.json({
       success: true,

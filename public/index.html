@@ -528,11 +528,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="tp-hero-discount-content text-center">
-                <p>
-                  Book your summer stay with us on our website and
-                  <a href="#">Get 20% Off</a> if you book 2 nights or more!
-                  Valid from 1st May to 1st August.
-                </p>
+                <p></p>
               </div>
             </div>
           </div>
@@ -2266,7 +2262,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', async function () {
         try {
-          const res = await fetch('http://localhost:3000/api/rooms');
+          const res = await fetch('http://203.161.52.58:3000/api/rooms');
           if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
           const { rooms } = await res.json();
           if (!Array.isArray(rooms)) return;

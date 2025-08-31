@@ -16,7 +16,7 @@ const SignIn = ({ setIsAuthenticated }) => {
     setError('');
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/auth/signin',
+        'http://203.161.52.58:3000/api/auth/signin',
         formData
       );
       localStorage.setItem('token', response.data.token);

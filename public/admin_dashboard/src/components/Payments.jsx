@@ -11,7 +11,7 @@ const Payments = () => {
     const fetchPayments = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/admin/payments',
+          'http://203.161.52.58:3000/api/admin/payments',
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,

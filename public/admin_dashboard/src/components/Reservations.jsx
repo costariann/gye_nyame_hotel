@@ -9,7 +9,7 @@ const Reservations = () => {
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/admin/reservations',
+          'http://203.161.52.58:3000/api/admin/reservations',
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,

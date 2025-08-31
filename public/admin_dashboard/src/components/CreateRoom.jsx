@@ -38,7 +38,7 @@ const CreateRoom = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/rooms',
+        'http://203.161.52.58:3000/api/rooms',
         data,
         {
           headers: {

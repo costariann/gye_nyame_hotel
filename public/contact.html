@@ -619,9 +619,8 @@
                     Leave our team a message.
                   </h2>
                   <p class="tp-contact-dis">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vivamus non enim<br />
-                    lacus. Nullam congue blandit quam, sit amet
+                    We are here to assist you. Reach out to us for any inquiries
+                    or support.
                   </p>
                 </div>
               </div>
@@ -634,7 +633,9 @@
                     <h5>Phone</h5>
                     <span
                       >Office.
-                      <a href="tel:+61234–5678910">+61 234–567 8910</a></span
+                      <a href="tel:0550617450/"
+                        >0550617450 / 0553097879</a
+                      ></span
                     >
                   </div>
                 </div>
@@ -646,7 +647,9 @@
                   ></span>
                   <div class="tp-contact-text">
                     <h5>Email</h5>
-                    <a href="mailto:support@housey.com">support@housey.com</a>
+                    <a href="mailto:ggbghanab2b@gmail.com"
+                      >ggbghanab2b@gmail.com</a
+                    >
                   </div>
                 </div>
               </div>
@@ -658,8 +661,8 @@
                   <div class="tp-contact-text">
                     <h5>Office</h5>
                     <a
-                      href="https://www.google.com/maps/place/102+Thompson+St,+New+York,+NY+10012,+USA/@40.7255437,-74.004061,17z/data=!3m1!4b1!4m5!3m4!1s0x89c2598c338f691d:0x6d5f394e7a1962cc!8m2!3d40.7255397!4d-74.0018723"
-                      >6391 Elgin St. Celina, Delaware.</a
+                      href="https://www.google.com/maps/place/80+Schneider+Street,+Sankor+Winneba"
+                      >80 Schneider Street, Sankor Winneba</a
                     >
                   </div>
                 </div>
@@ -682,7 +685,7 @@
                   <a href="index.html"
                     ><img
                       data-width="138"
-                      src="assets/img/logo/logo-white.png"
+                      src="assets/img/logo/gyenyame.PNG"
                       alt="logo"
                   /></a>
                 </div>
@@ -690,15 +693,15 @@
                   <div class="tp-footer-location mb-20">
                     <a
                       href="https://www.google.com/maps/@41.6758525,-86.2531698,18.17z"
-                      >84 N. Hill Field St.Scarsdale, NY 10583</a
+                      >80 Schneider Street, Sankor Winneba</a
                     >
                   </div>
                   <div class="tp-footer-number mb-15">
                     <span class="tp-footer-call-title"
                       >Call For Reservations</span
                     >
-                    <a href="tel:+(62)43502476" class="tp-footer-call"
-                      >+(62) 4350 2476</a
+                    <a class="tp-footer-call"
+                      >+233 550 617 450/+233 553 097 7879</a
                     >
                   </div>
                   <div class="tp-footer-btn">
@@ -740,12 +743,8 @@
                   <div class="col-lg-6 col-md-6">
                     <div class="tp-footer-widget-content">
                       <ul>
-                        <li><a href="#">Things To Do</a></li>
-                        <li><a href="#">Rooms & Suites</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Book Now</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="room.html">Rooms & Suites</a></li>
+                        <li><a href="about.html">About Us</a></li>
                       </ul>
                     </div>
                   </div>
@@ -842,7 +841,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', async function () {
         try {
-          const res = await fetch('http://localhost:3000/api/rooms');
+          const res = await fetch('http://203.161.52.58:3000/api/rooms');
           if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
           const { rooms } = await res.json();
           if (!Array.isArray(rooms)) return;
