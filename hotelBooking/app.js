@@ -492,7 +492,7 @@ app.get('/api/rooms', async (req, res) => {
       image_urls: Array.from(
         { length: room.images ? room.images.length : 0 },
         (_, i) =>
-          `http://203.161.52.58:3000/api/rooms/${room.room_id}/images/${i}`
+          `https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms/${room.room_id}/images/${i}`
       ),
     }));
     res.json({ rooms });
@@ -781,7 +781,7 @@ app.get('/api/rooms/:id', async (req, res) => {
     const image_urls = Array.from(
       { length: room.images ? room.images.length : 0 },
       (_, i) =>
-        `http://203.161.52.58:3000/api/rooms/${room.room_id}/images/${i}`
+        `https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms/${room.room_id}/images/${i}`
     );
     res.json({
       success: true,
