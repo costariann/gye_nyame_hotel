@@ -28,7 +28,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'theNewKeyGenerator';
 app.use(express.json());
 app.use(
   cors({
-    origin: ['https://ggbghana.com/', 'https://staff.ggbghana.com/'], // Allow both origins
+    origin: [
+      'https://ggbghana.com/',
+      'https://staff.ggbghana.com/',
+      'https://gye-nyame-hotel-backend-neqd.onrender.com',
+    ], // Allow both origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
