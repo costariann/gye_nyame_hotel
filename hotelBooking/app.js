@@ -31,7 +31,7 @@ app.use(
     origin: [
       'https://ggbghana.com/',
       'https://staff.ggbghana.com/',
-      'https://ggbghanaa.netlify.app/',
+      'https://ggbghanaa.netlify.app',
       'https://gye-nyame-hotel-backend-neqd.onrender.com',
     ], // Allow both origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
