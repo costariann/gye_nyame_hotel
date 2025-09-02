@@ -2282,14 +2282,14 @@
             selectedRooms
               .map(
                 (r) => `
-                <li>
-                  <a class="nav-room-link" href="/room-detail.html?id=${
-                    r.room_id
-                  }">
-                    ${r.room_type.replace(/_/g, ' ')} 
-                  </a>
-                </li>
-              `
+              <li>
+                <a class="nav-room-link" href="/room-detail.html?id=${
+                  r.room_id
+                }">
+                  ${r.room_type.replace(/_/g, ' ')} 
+                </a>
+              </li>
+            `
               )
               .join('') ||
             '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
@@ -2298,6 +2298,20 @@
           const all = document.createElement('li');
           all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
           submenu.appendChild(all);
+
+          // Add toggle functionality for desktop
+          const roomsLink = roomsLi.querySelector('a');
+          roomsLink.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default link behavior
+            submenu.classList.toggle('open'); // Toggle visibility class
+          });
+
+          // Close submenu when clicking outside
+          document.addEventListener('click', function (e) {
+            if (!roomsLi.contains(e.target)) {
+              submenu.classList.remove('open');
+            }
+          });
         } catch (e) {
           const roomsLi = document.querySelector('#header-sticky .rooms-nav');
           const submenu = roomsLi?.querySelector('.tp-submenu.submenu');

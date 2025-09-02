@@ -12831,4 +12831,43 @@ p.checkout-coupon input[type='text']:focus {
   border-color: #b7124d;
 }
 
+/* Existing rule for off-canvas menu (unchanged) */
+.tp-offcanvas-menu ul li .tp-submenu {
+  display: none;
+  padding-left: 20px;
+}
+
+/* Styles for header submenu */
+#header-sticky .tp-submenu.submenu {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  padding: 10px 0;
+}
+
+#header-sticky .tp-submenu.submenu.open {
+  display: block; /* Show when open class is present */
+}
+
+#header-sticky .rooms-nav {
+  position: relative; /* Ensure submenu positions correctly */
+}
+
+/* Ensure visibility and toggle on lg and up */
+@media (min-width: 992px) {
+  .tp-main-menu-3 {
+    display: block !important; /* Override d-none d-lg-block */
+  }
+  #header-sticky .tp-submenu.submenu {
+    display: none; /* Reapply default hidden state */
+  }
+  #header-sticky .tp-submenu.submenu.open {
+    display: block; /* Toggle visibility */
+  }
+}
 /*# sourceMappingURL=main.css.map */
