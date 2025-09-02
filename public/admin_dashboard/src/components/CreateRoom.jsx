@@ -38,7 +38,7 @@ const CreateRoom = () => {
 
     try {
       const response = await axios.post(
-        'http://203.161.52.58:3000/api/rooms',
+        'https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms',
         data,
         {
           headers: {

@@ -22,7 +22,7 @@ const SignUp = () => {
     setSuccess('');
     try {
       const response = await axios.post(
-        'http://203.161.52.58:3000/api/auth/signup',
+        'https://gye-nyame-hotel-backend-neqd.onrender.com/api/auth/signup',
         formData
       );
       setSuccess(response.data.message);

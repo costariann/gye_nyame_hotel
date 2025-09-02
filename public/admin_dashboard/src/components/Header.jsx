@@ -14,9 +14,12 @@ const Header = ({ toggleSidebar, handleSignOut }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          await axios.get('http://203.161.52.58:3000/api/auth/verify', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          await axios.get(
+            'https://gye-nyame-hotel-backend-neqd.onrender.com/api/auth/verify',
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
           setIsAuthenticated(true);
         } catch (err) {
           console.error('Token verification failed:', err);
