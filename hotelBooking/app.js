@@ -475,7 +475,7 @@ app.get('/api/rooms', async (req, res) => {
     const result = await pool.query(`
       SELECT 
         r.*,
-        array_length(r.images, 1) AS image_count,
+        array_length(r.images::TEXT[], 1) AS image_count,
         json_agg(
           json_build_object(
             'check_in_date', res.check_in_date,
@@ -492,7 +492,7 @@ app.get('/api/rooms', async (req, res) => {
       image_urls: Array.from(
         { length: room.image_count || 0 },
         (_, i) =>
-          `http://localhost:${port}/api/rooms/${room.room_id}/images/${i}`
+          `http://203.161.52.58:3000/api/rooms/${room.room_id}/images/${i}`
       ),
     }));
     res.json({ rooms });
@@ -763,7 +763,7 @@ app.get('/api/rooms/:id', async (req, res) => {
     const roomResult = await pool.query(
       `SELECT 
          r.*,
-         array_length(r.images, 1) AS image_count,
+         array_length(r.images::TEXT[], 1) AS image_count,
          json_agg(
            json_build_object(
              'check_in_date', res.check_in_date,
@@ -808,7 +808,6 @@ app.get('/api/rooms/:id', async (req, res) => {
       .json({ error: 'Failed to fetch room', details: err.message });
   }
 });
-
 app.post('/api/reservations', async (req, res) => {
   const {
     room_id,
