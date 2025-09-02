@@ -2261,65 +2261,138 @@
     </script>
     <script>
       document.addEventListener('DOMContentLoaded', async function () {
+        const headerRoomsLi = document.querySelector(
+          '#header-sticky .rooms-nav'
+        );
+        const headerSubmenu = headerRoomsLi?.querySelector(
+          '.tp-submenu.submenu'
+        );
+        if (!headerSubmenu) {
+          console.error('Header submenu element not found:', headerRoomsLi);
+          return;
+        }
+
+        // Optional: Handle off-canvas menu
+        const offcanvasMenu = document.querySelector('.tp-offcanvas-menu');
+        let offcanvasSubmenu = null;
+        if (offcanvasMenu) {
+          const offcanvasRoomsLi = offcanvasMenu.querySelector('.rooms-nav');
+          offcanvasSubmenu = offcanvasRoomsLi?.querySelector(
+            '.tp-submenu.submenu'
+          );
+          if (!offcanvasSubmenu) {
+            console.warn('Off-canvas submenu not found, creating placeholder');
+            const offcanvasLink = offcanvasRoomsLi?.querySelector('a');
+            if (offcanvasRoomsLi && !offcanvasSubmenu) {
+              offcanvasSubmenu = document.createElement('ul');
+              offcanvasSubmenu.className = 'tp-submenu submenu';
+              offcanvasRoomsLi.appendChild(offcanvasSubmenu);
+            }
+          }
+        }
+
         try {
+          console.log('Fetching rooms...');
           const res = await fetch(
             'https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms'
           );
-          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-          const { rooms } = await res.json();
-          if (!Array.isArray(rooms)) return;
+          if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP error! Status: ${res.status}, ${errorText}`);
+          }
+          const data = await res.json();
+          console.log('Raw API response:', data);
+          const { rooms } = data;
+          if (!Array.isArray(rooms)) {
+            console.warn('Rooms data is not an array:', rooms);
+            headerSubmenu.innerHTML =
+              '<li><a class="nav-room-link" href="#">Invalid room data</a></li>';
+            if (offcanvasSubmenu)
+              offcanvasSubmenu.innerHTML = headerSubmenu.innerHTML;
+            return;
+          }
+          if (rooms.length === 0) {
+            console.warn('No rooms returned');
+            headerSubmenu.innerHTML =
+              '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
+            if (offcanvasSubmenu)
+              offcanvasSubmenu.innerHTML = headerSubmenu.innerHTML;
+            return;
+          }
 
           const selectedRooms = rooms
             .sort(() => 0.5 - Math.random())
             .slice(0, 6);
+          console.log('Selected rooms:', selectedRooms);
 
-          // Target the Rooms nav link specifically using the rooms-nav class
-          const roomsLi = document.querySelector('#header-sticky .rooms-nav');
-          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
-          if (!submenu) return;
-
-          submenu.innerHTML =
+          const submenuHtml =
             selectedRooms
               .map(
                 (r) => `
-              <li>
-                <a class="nav-room-link" href="/room-detail.html?id=${
-                  r.room_id
-                }">
-                  ${r.room_type.replace(/_/g, ' ')} 
-                </a>
-              </li>
-            `
+            <li>
+              <a class="nav-room-link" href="/room-detail.html?id=${r.room_id}">
+                ${r.room_type.replace(/_/g, ' ')}
+              </a>
+            </li>
+          `
               )
               .join('') ||
-            '<li><a class="nav-room-link" href="#">No rooms available</a></li>';
+            '<li><a class="nav-room-link" href="#">No rooms</a></li>';
 
-          // Add "View all rooms" link
+          headerSubmenu.innerHTML = submenuHtml;
+          if (offcanvasSubmenu) offcanvasSubmenu.innerHTML = submenuHtml;
+
           const all = document.createElement('li');
           all.innerHTML = `<a class="nav-room-link" href="/room.html">View all rooms →</a>`;
-          submenu.appendChild(all);
-
-          // Add toggle functionality for desktop
-          const roomsLink = roomsLi.querySelector('a');
-          roomsLink.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent default link behavior
-            submenu.classList.toggle('open'); // Toggle visibility class
-          });
-
-          // Close submenu when clicking outside
-          document.addEventListener('click', function (e) {
-            if (!roomsLi.contains(e.target)) {
-              submenu.classList.remove('open');
-            }
-          });
+          headerSubmenu.appendChild(all.cloneNode(true));
+          if (offcanvasSubmenu)
+            offcanvasSubmenu.appendChild(all.cloneNode(true));
         } catch (e) {
-          const roomsLi = document.querySelector('#header-sticky .rooms-nav');
-          const submenu = roomsLi?.querySelector('.tp-submenu.submenu');
-          if (submenu)
-            submenu.innerHTML =
-              '<li><a class="nav-room-link" href="#">Error loading rooms</a></li>';
-          console.error(e);
+          console.error('Fetch or processing error:', e.message, e.stack);
+          headerSubmenu.innerHTML =
+            '<li><a class="nav-room-link" href="#">Error loading rooms</a></li>';
+          if (offcanvasSubmenu)
+            offcanvasSubmenu.innerHTML = headerSubmenu.innerHTML;
         }
+
+        // Toggle functionality for header
+        const headerRoomsLink = headerRoomsLi.querySelector('a');
+        if (headerRoomsLink) {
+          headerRoomsLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            console.log('Toggling header submenu');
+            headerSubmenu.classList.toggle('open');
+          });
+        } else {
+          console.error('Header rooms link not found');
+        }
+
+        // Toggle functionality for off-canvas (if present)
+        if (offcanvasSubmenu) {
+          const offcanvasRoomsLink =
+            offcanvasMenu.querySelector('.rooms-nav a');
+          if (offcanvasRoomsLink) {
+            offcanvasRoomsLink.addEventListener('click', function (e) {
+              e.preventDefault();
+              console.log('Toggling off-canvas submenu');
+              offcanvasSubmenu.classList.toggle('open');
+            });
+          } else {
+            console.error('Off-canvas rooms link not found');
+          }
+        }
+
+        // Close submenu when clicking outside
+        document.addEventListener('click', function (e) {
+          if (!headerRoomsLi.contains(e.target)) {
+            headerSubmenu.classList.remove('open');
+            console.log('Header submenu closed by outside click');
+          }
+          if (offcanvasSubmenu && !offcanvasMenu.contains(e.target)) {
+            offcanvasSubmenu.classList.remove('open');
+            console.log('Off-canvas submenu closed by outside click');
+          }
+        });
       });
     </script>
   </body>

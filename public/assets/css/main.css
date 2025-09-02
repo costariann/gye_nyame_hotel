@@ -12831,14 +12831,49 @@ p.checkout-coupon input[type='text']:focus {
   border-color: #b7124d;
 }
 
-/* Existing rule for off-canvas menu (unchanged) */
-.tp-offcanvas-menu ul li .tp-submenu {
-  display: none;
-  padding-left: 20px;
+/* Menu item styling */
+tp-main-menu nav ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 30px;
+  position: relative;
+  transition: all 0.3s ease-out 0s;
 }
 
-/* Styles for header submenu */
-#header-sticky .tp-submenu.submenu {
+.room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.room-link {
+  display: block;
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 18px;
+  color: #b7124d;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid #e0e2e3;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.room-link:hover {
+  background: #f8e6ef;
+  border-color: #b7124d;
+  color: #761f0e;
+}
+
+.room-link.selected {
+  background: #b7124d;
+  color: #fff;
+  border-color: #b7124d;
+}
+
+/* Submenu styling for both header and off-canvas */
+.tp-submenu.submenu {
   display: none; /* Hidden by default */
   position: absolute;
   top: 100%;
@@ -12848,26 +12883,43 @@ p.checkout-coupon input[type='text']:focus {
   z-index: 1000;
   min-width: 200px;
   padding: 10px 0;
+  list-style: none;
 }
 
-#header-sticky .tp-submenu.submenu.open {
+.tp-submenu.submenu.open {
   display: block; /* Show when open class is present */
 }
 
-#header-sticky .rooms-nav {
+#header-sticky .rooms-nav,
+.tp-offcanvas-menu .rooms-nav {
   position: relative; /* Ensure submenu positions correctly */
 }
 
-/* Ensure visibility and toggle on lg and up */
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .tp-main-menu-3 {
+    display: none !important; /* Hide desktop menu on small screens */
+  }
+  .tp-offcanvas-menu {
+    display: block !important; /* Show off-canvas menu */
+  }
+  .tp-offcanvas-menu .tp-submenu.submenu {
+    position: relative; /* Stack vertically on mobile */
+    box-shadow: none; /* Remove shadow for flat design */
+    background-color: transparent; /* Match mobile style */
+    padding-left: 20px; /* Align with off-canvas style */
+  }
+}
+
 @media (min-width: 992px) {
   .tp-main-menu-3 {
-    display: block !important; /* Override d-none d-lg-block */
+    display: block !important; /* Show desktop menu */
   }
-  #header-sticky .tp-submenu.submenu {
-    display: none; /* Reapply default hidden state */
+  .tp-offcanvas-menu {
+    display: none !important; /* Hide off-canvas menu */
   }
-  #header-sticky .tp-submenu.submenu.open {
-    display: block; /* Toggle visibility */
+  .tp-submenu.submenu {
+    min-width: 250px; /* Increase width for desktop */
   }
 }
 /*# sourceMappingURL=main.css.map */
