@@ -15,10 +15,12 @@ const Rooms = () => {
   });
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Fixed at 10 items per page
+  const [itemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true); // Initialize loading as true
 
   useEffect(() => {
     const fetchRooms = async () => {
+      setLoading(true); // Set loading to true when starting fetch
       try {
         const response = await axios.get(
           'https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms',
@@ -32,6 +34,8 @@ const Rooms = () => {
       } catch (err) {
         console.error('Error fetching rooms:', err);
         setError('Failed to load rooms');
+      } finally {
+        setLoading(false); // Set loading to false when fetch completes
       }
     };
     fetchRooms();
@@ -157,7 +161,13 @@ const Rooms = () => {
             </tr>
           </thead>
           <tbody className="text-sm md:text-base">
-            {currentRooms.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan="7" className="p-4 text-center text-gray-500">
+                  Fetching data
+                </td>
+              </tr>
+            ) : currentRooms.length > 0 ? (
               currentRooms.map((room) => (
                 <tr key={room.room_id} className="border-t">
                   <td className="p-2 break-words">{room.room_number}</td>
@@ -187,7 +197,7 @@ const Rooms = () => {
             ) : (
               <tr>
                 <td colSpan="7" className="p-4 text-center text-gray-500">
-                  No rooms available
+                  No rooms found
                 </td>
               </tr>
             )}
