@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Rooms = () => {
@@ -14,70 +14,28 @@ const Rooms = () => {
     status: 'available',
   });
   const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const observerRef = useRef(null);
-
-  const fetchRooms = useCallback(async () => {
-    if (!hasMore || loading) return;
-
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        'https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms',
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-          params: {
-            page,
-            limit: 10,
-          },
-          timeout: 10000,
-        }
-      );
-      const newRooms = response.data.rooms || [];
-      setRooms((prevRooms) => [...prevRooms, ...newRooms]);
-      setPage((prevPage) => prevPage + 1);
-      setHasMore(newRooms.length === 10);
-    } catch (err) {
-      console.error('Error fetching rooms:', err);
-      setError(
-        err.code === 'ECONNABORTED'
-          ? 'Request timed out'
-          : 'Failed to load rooms'
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [hasMore, loading, page]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Fixed at 10 items per page
 
   useEffect(() => {
-    fetchRooms();
-  }, [fetchRooms]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          fetchRooms();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    const currentRef = observerRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+    const fetchRooms = async () => {
+      try {
+        const response = await axios.get(
+          'https://gye-nyame-hotel-backend-neqd.onrender.com/api/rooms',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+        setRooms(response.data.rooms);
+      } catch (err) {
+        console.error('Error fetching rooms:', err);
+        setError('Failed to load rooms');
       }
     };
-  }, [fetchRooms, hasMore, loading]);
+    fetchRooms();
+  }, []);
 
   const handleEdit = (room) => {
     setEditingRoom(room);
@@ -156,6 +114,7 @@ const Rooms = () => {
     setImages([...e.target.files]);
   };
 
+  // Truncate amenities to 4 items
   const truncateAmenities = (amenities) => {
     const list = amenities.split(',').map((a) => a.trim());
     if (list.length > 3) {
@@ -164,13 +123,24 @@ const Rooms = () => {
     return amenities;
   };
 
+  // Calculate total pages
+  const totalPages = Math.ceil(rooms.length / itemsPerPage);
+
+  // Get current items
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRooms = rooms.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle page change
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+
   return (
     <div className="p-6">
       <h1 className="text-2xl md:text-3xl font-bold mb-6">Rooms</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {loading && rooms.length === 0 && (
-        <p className="text-gray-500 mb-4">Loading rooms...</p>
-      )}
 
       {/* Table */}
       <div className="overflow-x-auto">
@@ -187,43 +157,37 @@ const Rooms = () => {
             </tr>
           </thead>
           <tbody className="text-sm md:text-base">
-            {rooms.map((room) => (
-              <tr key={room.room_id} className="border-t">
-                <td className="p-2 break-words">{room.room_number}</td>
-                <td className="p-2 break-words">{room.room_type}</td>
-                <td className="p-2 break-words">{room.capacity}</td>
-                <td className="p-2 break-words">GH¢{room.price_per_night}</td>
-                <td className="p-2 break-words">
-                  {truncateAmenities(room.amenities)}
-                </td>
-                <td className="p-2 break-words">{room.status}</td>
-                <td className="p-2 flex flex-wrap gap-2">
-                  <button
-                    onClick={() => handleEdit(room)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(room.room_id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {loading && rooms.length > 0 && (
+            {currentRooms.length > 0 ? (
+              currentRooms.map((room) => (
+                <tr key={room.room_id} className="border-t">
+                  <td className="p-2 break-words">{room.room_number}</td>
+                  <td className="p-2 break-words">{room.room_type}</td>
+                  <td className="p-2 break-words">{room.capacity}</td>
+                  <td className="p-2 break-words">GH¢{room.price_per_night}</td>
+                  <td className="p-2 break-words">
+                    {truncateAmenities(room.amenities)}
+                  </td>
+                  <td className="p-2 break-words">{room.status}</td>
+                  <td className="p-2 flex flex-wrap gap-2">
+                    <button
+                      onClick={() => handleEdit(room)}
+                      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(room.room_id)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
                 <td colSpan="7" className="p-4 text-center text-gray-500">
-                  Loading more rooms...
-                </td>
-              </tr>
-            )}
-            {!hasMore && rooms.length > 0 && (
-              <tr>
-                <td colSpan="7" className="p-4 text-center text-gray-500">
-                  No more rooms to load
+                  No rooms available
                 </td>
               </tr>
             )}
@@ -348,8 +312,45 @@ const Rooms = () => {
         </div>
       )}
 
-      {/* Loader for IntersectionObserver */}
-      {hasMore && <div ref={observerRef} className="h-10"></div>}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center mt-4">
+          <span className="text-gray-600">
+            Showing {currentPage} of {totalPages} pages
+          </span>
+          <div className="flex space-x-2">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (number) => (
+                <button
+                  key={number}
+                  onClick={() => paginate(number)}
+                  className={`px-4 py-2 rounded ${
+                    currentPage === number
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-300 text-gray-800 hover:bg-gray-400'
+                  }`}
+                >
+                  {number}
+                </button>
+              )
+            )}
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
